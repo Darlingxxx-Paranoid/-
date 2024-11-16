@@ -1,0 +1,71 @@
+@startuml 活动图
+start
+:用户;
+while(用户没有退出?) is (用户没有退出)
+
+    split
+        :创建任务/管理任务;
+        partition 任务区{
+        switch (进行操作)
+        case (删除任务)
+            :删除任务;
+        case (创建/编辑任务)
+            fork
+                :修改任务信息;
+                fork
+                    :修改任务基本信息;
+                    note left
+                        基本信息包括title、Descripition、class、DDL、
+                        priority、status、background
+                    end note
+                fork again  
+                    :修改任务附件;
+                fork again
+                    :修改任务提醒;
+                    fork    
+                        :添加提醒;
+                    note right
+                    创建任务时自动添加一个提醒
+                    end note
+                    fork again
+                        :删除提醒;
+                    end fork
+                end fork
+            fork again
+                :修改任务所属任务组;
+            fork again
+                :修改任务循环属性;
+            end fork
+        endswitch
+        :退出管理界面;
+        }
+    split again
+        :查看任务;
+        partition 视图区{
+        switch(视图模式)
+        case(Daily)
+            :显示当日任务;
+        case(weekly)
+            :显示本周任务;
+        case(monthly)
+            :显示本月任务;
+        case(all)
+            :显示所有任务;
+        endswitch
+        }
+        :退出查看任务界面;
+    split again
+        :同步任务;
+        partition 管理区{
+        if (同步成功?) then (yes)
+            #green:同步成功;
+        else (no)
+            #pink:错误;
+            detach
+        endif
+        }
+    end split
+    :回到主页面;
+endwhile (用户退出)
+stop
+@enduml

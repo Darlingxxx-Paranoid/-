@@ -1,0 +1,98 @@
+@startuml 类图
+
+package UserModule <<folder>>{
+  class User {
+    +String email
+    +String password
+    +List<device> devices
+    +register()
+    +login()
+    +sync()
+  }
+  class device {
+    +String deviceId
+    
+  }
+}
+
+package TaskModule <<folder>>{
+  class Task {
+    +String title
+    +String description
+    +String class
+    +Time DDL
+    +Priority priority
+    +Status status
+    +Image background
+    +List<Reminder> reminders
+    +List<Attachment> attachments
+    +create()
+    +edit()
+    +delete()
+    +loop()
+  }
+  class TaskGroup {
+    +String name
+    +boolean isActive
+    +List<Task> tasks
+    +activate()
+    +deactivate()
+    +sort_by_priority()
+    +sort_by_DDL()
+  }
+  class RecurringTask extends TaskModule.Task {
+    +Time recurrenceFrequency
+    +remove_Recurrence()
+    +update_Reminder()
+  }
+  enum Priority {
+    HIGH
+    MEDIUM
+    LOW
+  }
+  enum Status {
+    TODO
+    IN_PROGRESS
+    COMPLETED
+  }
+
+}
+
+package database <<folder>>{
+  class Attachment {
+    +String fileName
+    +byte[] fileData
+    +upload()
+    +delete()
+  }
+}
+
+package reminder <<folder>>{
+  class Reminder {
+    +Time reminder_time
+    +boolean isActive
+    +set_Reminder(Time reminder_time)
+    +deleteReminder()
+    +remind()
+  }
+}
+
+package View <<folder>>{
+  class TimelineView {
+    +display_Daily()
+    +display_Weekly()
+    +display_Monthly()
+    +desplay_All()
+  }
+
+}
+
+UserModule.User "1" -- "many" UserModule.device : has >
+device "1" -- "many" TaskModule.Task : creates >
+TaskModule.Task "1" -- "many" Attachment : has >
+TaskModule.Task "1" -- "1" Reminder : have >
+TaskModule.Task "1" -- "1" TaskGroup : part of >
+TaskGroup "1" -- "many" TaskModule.Task : contains >
+TimelineView "1" -- "many" TaskModule.Task : displays >
+
+@enduml

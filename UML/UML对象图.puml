@@ -1,0 +1,75 @@
+@startuml UML对象图
+
+package UserModule {
+    object user1 {
+        email = "user@example.com"
+        password = "securePassword"
+    }
+    object iphone{
+        deviceid="1"
+    }
+}
+
+package TaskModule {
+    object task1 {
+        title = "Complete Project Report"
+        description = "Finish the report by end of the week"
+        class="Work"
+        DDL = "2024-10-25T14:30"
+        priority = Priority.HIGH
+        status = Status.IN_PROGRESS
+        background=null
+        reminders = [reminder1,reminder2]
+        attachments = [attachment1]
+    }
+    object recurringTask1 {
+        title = "Weekly Team Meeting"
+        description = "Discuss project updates"
+        DDL = "2024-10-26"
+        priority = Priority.MEDIUM
+        status = TaskStatus.TODO
+        reminders=[reminder3]
+        recurrenceFreequency = "week"
+    }
+    object taskGroup1 {
+        name = "Weekly Tasks"
+        isActive = true
+    }
+}
+
+package database {
+    object attachment1 {
+        filePath = "/attachments/report.pdf"
+        fileData = "..."
+    }
+}
+package reminder {
+    object reminder1 {
+        reminder_time = "2024-10-22T14:30"
+        isActive = true
+    }
+    object reminder2 {
+        reminder_time = "2024-10-23T14:30"
+        isActive = true
+    }
+    object reminder3 {
+        reminder_time = "2024-10-26T8:30"
+        isActive = true
+    }
+}
+package View {
+    object timelineView {
+    }
+}
+user1 --> iphone :use
+iphone --> TaskModule.task1 :manage
+iphone --> TaskModule.recurringTask1 :manage
+database.attachment1 --* TaskModule.task1
+reminder.reminder1 --* TaskModule.task1
+reminder.reminder2 --* TaskModule.task1
+reminder.reminder3 --* TaskModule.recurringTask1
+TaskModule.task1 --* TaskModule.taskGroup1
+TaskModule.recurringTask1 --* TaskModule.taskGroup1
+timelineView --o TaskModule.task1 :display
+timelineView --o TaskModule.recurringTask1 :display
+@enduml

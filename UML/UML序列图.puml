@@ -1,0 +1,48 @@
+@startuml UML序列图
+actor User
+participant "To-Do App" as App
+participant "Task Database" as DB
+
+group 创建/管理任务
+    User -> App: 创建/管理任务
+    activate App
+    App -> DB: 保存任务信息
+    activate DB
+    note right
+        任务信息包括基本信息、循环、任务组等
+    end note    
+    DB -> App: 确认保存/删除任务
+    deactivate DB
+    App -> User: 显示创建/修改的任务，或回到主页面(删除任务)
+    deactivate App
+end
+
+group 同步任务
+    User -> App: 同步任务
+    activate App
+    App -> DB: 获取用户所有设备任务
+    activate DB
+    DB -> App: 同步到当前设备
+    deactivate DB
+    App -> User: 显示所有任务
+    deactivate App
+end
+group 任务预览
+    User -> App: 选择预览模式
+    activate App
+    App -> DB: 根据预览模式获取任务
+    activate DB
+    DB -> App: 返回任务
+    deactivate DB
+    App -> User: 任务预览
+    deactivate App
+
+end
+group 提醒
+    DB -> App: 到达提醒时间调用APP提醒
+    activate DB
+    App -> User: 提醒用户
+    activate App
+
+end
+@enduml
