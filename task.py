@@ -38,12 +38,28 @@ class Device:
         self.device_id = device_id
 
 
+class Reminder:
+    def __init__(self, num:int, reminder_time: datetime, is_active: bool):
+        self.num=num
+        self.reminder_time = reminder_time
+        self.is_active = is_active
+
+    def set_reminder(self, reminder_time: datetime):
+        self.reminder_time = reminder_time
+        self.is_active = True
+
+    def close_reminder(self):
+        self.is_active = False
+
+    def remind(self):
+        # Reminder logic
+        pass
 
 # Task Module
 class Task:
     def __init__(self, 
                  num: int,
-                 title: str="", 
+                 title: str="新任务", 
                  description: str="", 
                  task_class: str="",
                  ddl: datetime=datetime.now(), 
@@ -56,8 +72,10 @@ class Task:
         self.ddl = ddl
         self.priority = priority
         self.status = status
-        self.reminders = []
-        self.attachments = []
+        self.attachments_list = [Attachment]
+        self.reminder_list =[Reminder]
+        default_reminder=Reminder(1,self.ddl,is_active=1)
+        self.reminder_list.append(default_reminder)
 
     def create(self):
         # Create task logic
@@ -72,24 +90,45 @@ class Task:
     def delete(self):
         # Delete task logic
         pass
+    #添加提醒
+    def add_reminder(self,remind_time: datetime):
+        total_num=len(self.reminders)
+        new_reminder=Reminder(total_num+1,remind_time,is_active=1)
+        self.reminder_list.append(new_reminder)
+
+    #关闭提醒
+    def delete_reminder(self,reminder_num: int):
+        for item in self.reminder_list:
+            if item.num==reminder_num:
+                item.close_reminder()
+
+    #删除提醒
+    def delete_reminder(self,reminder_num: int):
+        for item in self.reminder_list:
+            if item.num==reminder_num:
+                self.reminder_list.remove(item)
+    #
+    def add_attachment(self):
+        pass
     
 
 
 #存储所有任务
 class task_list():
-    def _init_(self):
+    def __init__(self):
         self.tasklist=[]
 
     def add_task(self,**kwargs):
-        next_num=self.tasklist.count()+1
+        next_num=len(self.tasklist)+1
         task=Task(num=next_num)
         self.tasklist.append(task)
-        task.edit(kwargs)
+        task.edit(**kwargs)
 
     def delete_task(self,title:str):
         for it in self.tasklist:
             if it.title==title:
                 self.tasklist.remove(it)
+                break
 
    
 
@@ -143,35 +182,22 @@ class Attachment:
         # Delete logic
         pass
 
-class Reminder:
-    def __init__(self, num:int, reminder_time: datetime, is_active: bool):
-        self.num=num
-        self.reminder_time = reminder_time
-        self.is_active = is_active
 
-    def set_reminder(self, reminder_time: datetime):
-        self.reminder_time = reminder_time
-        self.is_active = True
-
-    def delete_reminder(self):
-        self.is_active = False
-
-    def remind(self):
-        # Reminder logic
-        pass
 
 # View Module
 class TimelineView:
     def __init__(self):
         self.display_list=[]
 
-    def display_daily(self):
+    def display_daily(self,task_list:task_list):
         self.display_list.clear()
         for item in task_list.tasklist:
-            if item.DDL==date.today():
+        # 将 ddl 转换为日期对象
+            item_date = item.ddl.date()            
+            if item_date == date.today():  # 比较任务的日期和今天的日期
                 self.display_list.append(item)
 
-    def display_weekly(self):
+    def display_weekly(self,task_list:task_list):
         self.display_list.clear()
         today = date.today()
         start_of_week = today - timedelta(days=today.weekday())
@@ -179,6 +205,7 @@ class TimelineView:
         for item in task_list.tasklist:
             if start_of_week <= item.DDL <= end_of_week:
                 self.display_list.append(item)
+                break
 
     def display_monthly(self):
         # Display monthly tasks
