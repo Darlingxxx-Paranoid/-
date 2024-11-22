@@ -29,19 +29,7 @@ class App(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
-class StartPage(tk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        label = tk.Label(self, text="Start Page")
-        label.pack(side="top", fill="x", pady=10)
 
-        button1 = tk.Button(self, text="Go to Page One",
-                            command=lambda: controller.show_frame("PageOne"))
-        button2 = tk.Button(self, text="Go to Page Two",
-                            command=lambda: controller.show_frame("PageTwo"))
-        button1.pack()
-        button2.pack()
 
 class PageOne(tk.Frame):
     def __init__(self, parent, controller):
@@ -65,6 +53,4 @@ class PageTwo(tk.Frame):
                            command=lambda: controller.show_frame("StartPage"))
         button.pack()
 
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+
