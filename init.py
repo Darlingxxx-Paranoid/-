@@ -11,7 +11,6 @@ import main
 def Init():
     #用户头像
     main.image_path = r'data\uesr_photo.jpg'
-    
     #用户姓名和格言
     with open('./data/user_information.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
@@ -22,4 +21,5 @@ def Init():
     #当前展示列表
     main.display_task_list=timelineview.TimelineView()
     main.display_task_list.display_daily(main.user_task_list)
+    print(main.display_task_list.display_list)
     

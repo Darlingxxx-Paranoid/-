@@ -37,9 +37,6 @@ class Task:
         default_reminder=reminder.Reminder(1,self.ddl,is_active=1)
         self.reminder_list.append(default_reminder)
 
-    def create(self):
-        # Create task logic
-        pass
 
     def edit(self, **kwargs):
         # Update task attributes based on kwargs

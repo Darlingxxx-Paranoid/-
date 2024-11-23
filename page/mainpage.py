@@ -66,7 +66,7 @@ class Mainpage(tk.Frame):
         show_today_task_list(toady_task_list)
 
         #创建新项目
-        create_task=Button(today_task,text="创建新项目",command=change.create_new_task)
+        create_task=Button(today_task,text="创建新项目",command=lambda: change.create_new_task(self))
         create_task.pack(side=BOTTOM)
 
         #任务组
