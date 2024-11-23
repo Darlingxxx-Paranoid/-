@@ -16,8 +16,8 @@ def show_today_task_list(today_task_list: tk.Frame):
         task_frame=Frame(today_task_list,bg='black',width=300)
         task_frame.pack(pady=(10,10),anchor=W)
         check_var = IntVar()  # 创建一个变量来存储复选框的状态
-        check_var.set(0)  # 初始化变量为未选中状态
-        check_button=Checkbutton(task_frame,bg='black',text=f"{item.title}",fg='white',variable=check_var,onvalue=1,offvalue=0,command=change.finish_task(item),highlightthickness=0,width=10)
+        check_var.set(0)
+        check_button=Checkbutton(task_frame,bg='black',text=f"{item.title}",fg='white',variable=check_var,offvalue=0,onvalue=1,command=lambda: change.finish_task(item, check_var),highlightthickness=0,width=10)
         formatted_date = item.ddl.strftime("%H:%M")
         task_ddl=Label(task_frame,bg='black',text=formatted_date,fg='white',width=20)
         task_ddl.grid(row=0,column=1)

@@ -5,6 +5,7 @@ import tasklist
 import main
 import APP
 import mainpage
+import tkinter as tk
 
 #创建新任务
 def create_new_task(mainpage):
@@ -16,13 +17,14 @@ def create_new_task(mainpage):
     
     
 #完成任务
-def finish_task(current_task:task.Task,var):
+def finish_task(current_task:task.Task,var:tk.BooleanVar):
     if var.get():
         current_task.status=task.Status.COMPLETED
-        print(var)   
+        print("ok")   
     else:
         current_task.status=task.Status.TODO
-        print(var) 
+        print("no") 
+
 #切换到任务组
 def switch_task_group():
     pass

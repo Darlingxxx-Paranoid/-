@@ -21,5 +21,4 @@ def Init():
     #当前展示列表
     main.display_task_list=timelineview.TimelineView()
     main.display_task_list.display_daily(main.user_task_list)
-    print(main.display_task_list.display_list)
     
