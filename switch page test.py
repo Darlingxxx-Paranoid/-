@@ -1,9 +1,11 @@
 import tkinter as tk
+import createpage
+import mainpage
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Multi-Page App")
+        self.title("TODO Your Best")
 
         # 创建容器 Frame
         container = tk.Frame(self)
@@ -13,7 +15,7 @@ class App(tk.Tk):
         self.frames = {}
 
         # 初始化页面
-        for F in (StartPage, PageOne, PageTwo):
+        for F in (mainpage.Mainpage, createpage.Createpage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -22,35 +24,12 @@ class App(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
         # 显示初始页面
-        self.show_frame("StartPage")
+        self.show_frame("mainpage")
 
     def show_frame(self, page_name):
         # 切换页面
         frame = self.frames[page_name]
         frame.tkraise()
 
-
-
-class PageOne(tk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        label = tk.Label(self, text="Page One")
-        label.pack(side="top", fill="x", pady=10)
-
-        button = tk.Button(self, text="Go to Start Page",
-                           command=lambda: controller.show_frame("StartPage"))
-        button.pack()
-
-class PageTwo(tk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        label = tk.Label(self, text="Page Two")
-        label.pack(side="top", fill="x", pady=10)
-
-        button = tk.Button(self, text="Go to Start Page",
-                           command=lambda: controller.show_frame("StartPage"))
-        button.pack()
 
 
