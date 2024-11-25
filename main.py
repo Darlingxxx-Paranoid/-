@@ -18,6 +18,7 @@ user_task_list: tasklist.Task_list = None
 #当前界面展示任务列表
 display_task_list:timelineview.TimelineView=None
 
+
 if __name__ == "__main__":
     init.Init()
     root = APP.App()

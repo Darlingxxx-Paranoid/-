@@ -6,22 +6,47 @@ from task import *
 from tkinter import *
 from PIL import Image, ImageTk, ImageDraw
 import task
-import change
 import APP
 import main
+
 
 #显示当天任务
 def show_today_task_list(today_task_list: tk.Frame):
     for item in main.display_task_list.display_list:
         task_frame=Frame(today_task_list,bg='black',width=300)
-        task_frame.pack(pady=(10,10),anchor=W)
-        check_var = IntVar()  # 创建一个变量来存储复选框的状态
-        check_var.set(0)
-        check_button=Checkbutton(task_frame,bg='black',text=f"{item.title}",fg='white',variable=check_var,offvalue=0,onvalue=1,command=lambda: change.finish_task(item, check_var),highlightthickness=0,width=10)
+        task_frame.pack(pady=(10,10))
+        check_var = IntVar(value=1 if item.status == task.Status.COMPLETED else 0)  # 创建一个变量来存储复选框的状态
+        finish_button=Checkbutton(task_frame,bg='black',variable=check_var,offvalue=0,onvalue=1,command=lambda: finish_task(item, check_var),highlightthickness=0,width=1)
+        finish_button.grid(row=0,column=0,sticky=W)
+        #title
+        task_title=Label(task_frame,bg="black",text=item.title,fg='white')
+        task_title.grid(row=0,column=1,sticky=W)
+        #ddl
         formatted_date = item.ddl.strftime("%H:%M")
-        task_ddl=Label(task_frame,bg='black',text=formatted_date,fg='white',width=20)
-        task_ddl.grid(row=0,column=1)
-        check_button.grid(row=0,column=0,sticky=W) 
+        task_ddl=Label(task_frame,bg='black',text=formatted_date,fg='white',width=30)
+        task_ddl.grid(row=0,column=2)
+         
+#创建新任务
+def create_new_task(mainpage):
+    #刷新createpage
+    #TODO
+    #切换到createpage
+    mainpage.controller.show_frame("Createpage")
+    
+    
+#完成任务
+def finish_task(current_task:task.Task,var:tk.BooleanVar):
+    if var.get():
+        current_task.status=task.Status.COMPLETED
+    else:
+        current_task.status=task.Status.TODO
+
+#切换到任务组
+def switch_task_group():
+    pass
+#切换到一览模式
+def switch_view():
+    pass
 
 class Mainpage(tk.Frame):
     def __init__(self, parent, controller):
@@ -66,7 +91,7 @@ class Mainpage(tk.Frame):
         show_today_task_list(toady_task_list)
 
         #创建新项目
-        create_task=Button(today_task,text="创建新项目",command=lambda: change.create_new_task(self))
+        create_task=Button(today_task,text="创建新项目",command=lambda: create_new_task(self))
         create_task.pack(side=BOTTOM)
 
         #任务组
@@ -77,7 +102,7 @@ class Mainpage(tk.Frame):
         canvas.create_line(5, 5, 25, 5, width=3)
         canvas.create_line(5, 11, 25, 11, width=3)
         canvas.create_line(5, 17, 25, 17, width=3)
-        task_group_view = Button(task_group, text="查看任务组", bg='#EAECDF',command=change.switch_task_group)
+        task_group_view = Button(task_group, text="查看任务组", bg='#EAECDF',command=switch_task_group)
         task_group_view.pack(side=LEFT, padx=(5, 0))
 
         #一览
@@ -87,7 +112,7 @@ class Mainpage(tk.Frame):
         canvas.pack(side=LEFT, padx=(20, 0))
         canvas.create_oval(5, 8, 25, 20, outline='black', width=2)  # 调整外圈
         canvas.create_oval(12, 11, 18, 17, fill='black')  # 内圈
-        task_view = Button(view, text="任务一览", bg='#EAECDF',command=change.switch_view)
+        task_view = Button(view, text="任务一览", bg='#EAECDF',command=switch_view)
         task_view.pack(side=LEFT, padx=(5, 0))
 
 
