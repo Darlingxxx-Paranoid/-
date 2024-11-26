@@ -10,6 +10,7 @@ import tasklist
 
 #当前页面的任务
 current_task=task.Task()
+
 #完成任务
 def finish_task(var:tk.BooleanVar):
     global current_task
@@ -26,12 +27,21 @@ def back(page):
 def delete(task,page):
     page.controller.show_frame("Mainpage")
 
-def save(page):
-    global current_task
+def save(page,widget1,widget2,var):
+    current_task.title=widget1.get()
+    current_task.description=widget2.get()
+    if var.get()=="low":
+        current_task.priority=task.Priority.LOW
+    elif var.get()=="medium":
+        current_task.priority=task.Priority.MEDIUM
+    elif var.get()=="high":
+        current_task.priority=task.Priority.HIGH
     main.user_task_list.add_task(current_task)
-    print(current_task.description)
-    # main.user_task_list.save_to_file("data/user_data")
+    main.display_task_list.display_daily(main.user_task_list)
+    main.user_task_list.save_to_file("data/user_data")
     page.controller.show_frame("Mainpage")
+
+
 
 class Createpage(tk.Frame):
     def __init__(self, parent, controller):
@@ -55,7 +65,7 @@ class Createpage(tk.Frame):
         button.pack(side=tk.LEFT)
 
         #保存按钮
-        close_button = tk.Button(top_frame, text="保存", command=lambda: save(self), bg='#A3C1C1', font=("Arial", 16, "bold"), width=4, height=2, relief="flat")
+        close_button = tk.Button(top_frame, text="保存", command=lambda: save(self,title,task_description,var), bg='#A3C1C1', font=("Arial", 16, "bold"), width=4, height=2, relief="flat")
         close_button.pack(side=tk.RIGHT, padx=10, pady=10)
 
         #task_information
@@ -70,8 +80,6 @@ class Createpage(tk.Frame):
         finish_button.grid(row=0,column=0)
         title=tk.Entry(task_top,bg='#A3C1C1',relief="flat")
         title.insert(0,current_task.title)
-        #获取当前标题
-        current_task.title=title.get()
         title.grid(row=0,column=1)
 
         #信息区域
@@ -82,9 +90,9 @@ class Createpage(tk.Frame):
         task_1.grid(row=0,column=0)
         task_description=tk.Entry(information_field,bg='#A3C1C1',relief='flat')
         task_description.insert(0,current_task.description)
-        #获取当前描述
-        current_task.description=task_description.get()
         task_description.grid(row=0,column=1,pady=(20,20))
+
+        
 
         #任务紧急度
         task_2=tk.Label(information_field,bg='#A3C1C1',text="Priority: ")
@@ -97,14 +105,7 @@ class Createpage(tk.Frame):
             var.set("medium")
         elif current_task.priority == task.Priority.HIGH:
             var.set("high")
-        task_priority=tk.OptionMenu(information_field,var,"low","medium","high")
-        #获取当前标题
-        if var.get()=="low":
-            current_task.priority=task.Priority.LOW
-        elif var.get()=="medium":
-            current_task.priority=task.Priority.MEDIUM
-        elif var.get()=="high":
-            current_task.priority=task.Priority.HIGH
+        task_priority=tk.OptionMenu(information_field,var,"low","medium","high")        
         task_priority.grid(row=1,column=1,pady=(20,20))
 
         #任务提醒
@@ -140,7 +141,7 @@ class Createpage(tk.Frame):
         task_5=tk.Label(information_field,bg='#A3C1C1',text="任务分类: ")
         task_5.grid(row=4,column=0)
         if current_task.task_class == "":
-            #添加附件
+            #添加分类
             taskclass=tk.Button(information_field,bg='#A3C1C1',text="点击以添加分类",relief="flat")
             taskclass.grid(row=4,column=1,pady=(20,20))
         else:
@@ -151,3 +152,5 @@ class Createpage(tk.Frame):
         #删除按钮
         delete_button=tk.Button(information_field,bg="red",text="删除",relief="flat",width=20,command=lambda: delete(self))
         delete_button.grid(row=5, column=0, columnspan=2, pady=(20, 20))
+
+       

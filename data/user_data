@@ -29,36 +29,6 @@
                     "is_active": 1
                 }
             ]
-        },
-        {
-            "title": "新任务",
-            "description": "新任务",
-            "task_class": "",
-            "ddl": "2024-11-25T14:13:41.876677",
-            "priority": 3,
-            "status": "TODO",
-            "reminder_list": [
-                {
-                    "num": 1,
-                    "reminder_time": "2024-11-25T14:13:41.876677",
-                    "is_active": 1
-                }
-            ]
-        },
-        {
-            "title": "新任务",
-            "description": "",
-            "task_class": "",
-            "ddl": "2024-11-25T14:15:27.044435",
-            "priority": 3,
-            "status": "TODO",
-            "reminder_list": [
-                {
-                    "num": 1,
-                    "reminder_time": "2024-11-25T14:15:27.044435",
-                    "is_active": 1
-                }
-            ]
         }
     ],
     "classlist": {}

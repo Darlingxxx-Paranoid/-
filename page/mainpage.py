@@ -9,6 +9,12 @@ import task
 import APP
 import main
 
+def refresh_today_task_list(today_task_list: tk.Frame):
+    # Clear existing tasks
+    for widget in today_task_list.winfo_children():
+        widget.destroy()
+    # Repopulate the task list
+    show_today_task_list(today_task_list)
 
 #显示当天任务
 def show_today_task_list(today_task_list: tk.Frame):
@@ -24,12 +30,11 @@ def show_today_task_list(today_task_list: tk.Frame):
         #ddl
         formatted_date = item.ddl.strftime("%H:%M")
         task_ddl=Label(task_frame,bg='black',text=formatted_date,fg='white',width=30)
-        task_ddl.grid(row=0,column=2)
+        task_ddl.grid(row=0,column=2)   
+
          
 #创建新任务
 def create_new_task(mainpage):
-    #刷新createpage
-    #TODO
     #切换到createpage
     mainpage.controller.show_frame("Createpage")
     
@@ -86,9 +91,12 @@ class Mainpage(tk.Frame):
         current_day=Label(today_task,text=formatted_date,bg='#EAECDF')
         current_day.pack()
         #当天任务列表
-        toady_task_list=Frame(today_task,bg='#EAECDF')
-        toady_task_list.pack(fill=BOTH, expand=True)
-        show_today_task_list(toady_task_list)
+        today_task_list=Frame(today_task,bg='#EAECDF')
+        today_task_list.pack(fill=BOTH, expand=True)
+        show_today_task_list(today_task_list)
+
+        #刷新任务
+        self.schedule_refresh(today_task_list)
 
         #创建新项目
         create_task=Button(today_task,text="创建新项目",command=lambda: create_new_task(self))
@@ -114,5 +122,9 @@ class Mainpage(tk.Frame):
         canvas.create_oval(12, 11, 18, 17, fill='black')  # 内圈
         task_view = Button(view, text="任务一览", bg='#EAECDF',command=switch_view)
         task_view.pack(side=LEFT, padx=(5, 0))
-
-
+    
+    # Schedule the task list to refresh every 5 minutes
+    def schedule_refresh(self, today_task_list):
+        refresh_today_task_list(today_task_list)
+        self.after(1000, lambda: self.schedule_refresh(today_task_list))  # 300000 ms = 5 minutes
+        

@@ -26,7 +26,7 @@ class App(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
         # 显示初始页面
-        self.show_frame("Createpage")
+        self.show_frame("Mainpage")
 
     def show_frame(self, page_name):
         # 切换页面
