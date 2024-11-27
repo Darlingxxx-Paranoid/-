@@ -13,15 +13,14 @@ class TimelineView:
             if item_date == date.today():  # 比较任务的日期和今天的日期
                 self.display_list.append(item)
 
-    def display_weekly(self,task_list:tasklist.Task_list):
+    def display_weekly(self, task_list: tasklist.Task_list):
         self.display_list.clear()
         today = date.today()
-        start_of_week = today - timedelta(days=today.weekday())
-        end_of_week = start_of_week + timedelta(days=6)
+        start_of_week = datetime.combine(today - timedelta(days=today.weekday()), datetime.min.time())
+        end_of_week = datetime.combine(start_of_week + timedelta(days=6), datetime.max.time())
         for item in task_list.tasklist:
-            if start_of_week <= item.DDL <= end_of_week:
+            if start_of_week <= item.ddl <= end_of_week:
                 self.display_list.append(item)
-                break
 
     def display_monthly(self):
         # Display monthly tasks

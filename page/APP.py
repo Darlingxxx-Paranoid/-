@@ -1,6 +1,7 @@
 import tkinter as tk
 import mainpage
 import createpage
+import viewpage
 
 user_picture=None
 
@@ -17,7 +18,7 @@ class App(tk.Tk):
         self.frames = {}
 
         # 初始化页面
-        for F in (mainpage.Mainpage,createpage.Createpage):
+        for F in (mainpage.Mainpage,createpage.Createpage,viewpage.Viewpage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame

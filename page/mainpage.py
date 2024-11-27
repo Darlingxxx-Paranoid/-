@@ -8,6 +8,7 @@ from PIL import Image, ImageTk, ImageDraw
 import task
 import APP
 import main
+import viewpage
 
 def refresh_today_task_list(today_task_list: tk.Frame):
     # Clear existing tasks
@@ -20,16 +21,16 @@ def refresh_today_task_list(today_task_list: tk.Frame):
 def show_today_task_list(today_task_list: tk.Frame):
     for item in main.display_task_list.display_list:
         task_frame=Frame(today_task_list,bg='black',width=300)
-        task_frame.pack(pady=(10,10))
+        task_frame.pack(pady=(10,10),fill="x")
         check_var = IntVar(value=1 if item.status == task.Status.COMPLETED else 0)  # 创建一个变量来存储复选框的状态
         finish_button=Checkbutton(task_frame,bg='black',variable=check_var,offvalue=0,onvalue=1,command=lambda: finish_task(item, check_var),highlightthickness=0,width=1)
         finish_button.grid(row=0,column=0,sticky=W)
         #title
-        task_title=Label(task_frame,bg="black",text=item.title,fg='white')
+        task_title=Label(task_frame,bg="black",text=item.title,fg='white',width=20)
         task_title.grid(row=0,column=1,sticky=W)
         #ddl
         formatted_date = item.ddl.strftime("%H:%M")
-        task_ddl=Label(task_frame,bg='black',text=formatted_date,fg='white',width=30)
+        task_ddl=Label(task_frame,bg='black',text=formatted_date,fg='white')
         task_ddl.grid(row=0,column=2)   
 
          
@@ -50,8 +51,8 @@ def finish_task(current_task:task.Task,var:tk.BooleanVar):
 def switch_task_group():
     pass
 #切换到一览模式
-def switch_view():
-    pass
+def switch_view(mainpage):
+    mainpage.controller.show_frame("Viewpage")
 
 class Mainpage(tk.Frame):
     def __init__(self, parent, controller):
@@ -120,7 +121,7 @@ class Mainpage(tk.Frame):
         canvas.pack(side=LEFT, padx=(20, 0))
         canvas.create_oval(5, 8, 25, 20, outline='black', width=2)  # 调整外圈
         canvas.create_oval(12, 11, 18, 17, fill='black')  # 内圈
-        task_view = Button(view, text="任务一览", bg='#EAECDF',command=switch_view)
+        task_view = Button(view, text="任务一览", bg='#EAECDF',command=lambda:switch_view(self))
         task_view.pack(side=LEFT, padx=(5, 0))
     
     # Schedule the task list to refresh every 5 minutes

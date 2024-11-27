@@ -50,7 +50,7 @@ class Createpage(tk.Frame):
 
         
 
-         # 主框架
+        #顶部区域框架
         top_frame = tk.Frame(self, bg='#A3C1C1')
         top_frame.pack(fill=tk.X)
 
